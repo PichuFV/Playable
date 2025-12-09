@@ -30,7 +30,7 @@ O repositório está organizado em duas abordagens:
 
 ---
 
-## Como rodar
+## 🚀 Como rodar
 
 - Abra um terminal (**cmd** ou PowerShell)
 - Acesse a pasta do projeto: cd PlayAble\classification
@@ -44,5 +44,4 @@ O repositório está organizado em duas abordagens:
 - Joao Vitor Gimenes dos Santos
 - Nathan Henrique Guimaraes de Oliveira
 
-🔗 link documento:
-link
+🔗 link documento: https://docs.google.com/document/d/1wMyEvz9D6zS1NS_ht-npzFNCHC1FpZvB/edit?usp=sharing&ouid=108627184187957663801&rtpof=true&sd=true
