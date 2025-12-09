@@ -44,4 +44,5 @@ O repositório está organizado em duas abordagens:
 - Joao Vitor Gimenes dos Santos
 - Nathan Henrique Guimaraes de Oliveira
 
-🔗 link documento: https://docs.google.com/document/d/1wMyEvz9D6zS1NS_ht-npzFNCHC1FpZvB/edit?usp=sharing&ouid=108627184187957663801&rtpof=true&sd=true
+🔗 link documento: 
+https://docs.google.com/document/d/1wMyEvz9D6zS1NS_ht-npzFNCHC1FpZvB/edit?usp=sharing&ouid=108627184187957663801&rtpof=true&sd=true
