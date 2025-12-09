@@ -100,7 +100,7 @@ try:
         cv2.imshow("PlayAble - YOLO Head Pose", frame)
 
         # 'q' pra sair
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == 27: # 27 é o código da tecla ESC
             break
 
 finally:

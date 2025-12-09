@@ -17,6 +17,7 @@ O repositório está organizado em duas abordagens:
 - **OpenCV** – captura de vídeo da webcam
 - **keyboard** (ou `pynput`) – envio das teclas de seta para o sistema
 - **Roboflow** – preparação e download do dataset de classificação
+- **customtkinter** - criação de interface gráfica
 - Dataset base: **BIWI Kinect Head Pose Database**
 
 ---
@@ -33,9 +34,8 @@ O repositório está organizado em duas abordagens:
 ## 🚀 Como rodar
 
 - Abra um terminal (**cmd** ou PowerShell)
-- Acesse a pasta do projeto: cd PlayAble\classification
-- Instale as dependências: pip install ultralytics opencv-python keyboard
-- Execute o script: python playable_yolo_v2.py
+- Instale as dependências: pip install requirements.txt
+- Execute o script: python main_app.py
 
 ---
 

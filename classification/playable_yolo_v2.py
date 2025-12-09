@@ -1,5 +1,6 @@
 import time
 import cv2
+import argparse
 import keyboard
 from ultralytics import YOLO
 
@@ -19,7 +20,7 @@ PREDICT_EVERY_N_FRAMES = 2
 # ============================================
 
 print("[INFO] Carregando modelo YOLOv8 (classificação)...")
-model = YOLO("best.pt")
+model = YOLO("./classification/best.pt")
 
 # model.names é um dict: {0: 'center', 1: 'down', ...}
 class_names = model.names
@@ -29,34 +30,25 @@ print("[INFO] Classes aprendidas:", class_names)
 # MAPEAMENTO CLASSE -> TECLA
 # ============================================
 
-def label_to_key(label: str):
-    """
-    Converte o nome da classe em uma tecla do teclado.
-    'center' não manda nada.
-    """
-    mapping = {
-        "up": "up",
-        "down": "down",
-        "left": "left",
-        "right": "right",
-        # "center" -> None (sem comando)
-    }
-    return mapping.get(label, None)
-
 # ============================================
 # LOOP PRINCIPAL: WEBCAM -> MODELO -> TECLAS
 # ============================================
 
-def main():
+def main(key_mappings):
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         print("[ERRO] Não conseguiu abrir a webcam.")
         return
 
-    print("[INFO] Webcam aberta. Pressione 'q' na janela de vídeo para sair.")
+    # Define o nome da janela para ser reutilizado
+    window_name = "PlayAble - Webcam"
+    # Cria a janela com a propriedade AUTOSIZE para que ela se ajuste perfeitamente ao frame
+    cv2.namedWindow(window_name, cv2.WINDOW_AUTOSIZE)
+
+    print(f"[INFO] Webcam aberta. Pressione 'ESC' ou feche a janela ('X') para sair.")
     last_command_time = 0.0
     frame_count = 0
-
+    
     last_label = None  # para debug / overlay
 
     while True:
@@ -86,7 +78,7 @@ def main():
             # Decidir se manda tecla
             now = time.time()
             if now - last_command_time >= COMMAND_COOLDOWN:
-                key = label_to_key(label)
+                key = key_mappings.get(label) # Usa o mapeamento recebido
                 if key is not None:
                     # Envia uma "teclada" rápida
                     keyboard.press_and_release(key)
@@ -109,14 +101,33 @@ def main():
                 cv2.LINE_AA,
             )
 
-        cv2.imshow("PlayAble - Webcam", frame)
+        cv2.imshow(window_name, frame)
 
-        # Sair com 'q'
-        if cv2.waitKey(1) & 0xFF == ord("q"):
+        # Pressionar a tecla 'ESC' (código 27) ou clicar no botão 'X' da janela (getWindowProperty retorna < 1)
+        if cv2.waitKey(1) & 0xFF == 27 or cv2.getWindowProperty(window_name, cv2.WND_PROP_VISIBLE) < 1:
             break
 
     cap.release()
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    main()
+    # Configura o parser de argumentos para receber os mapeamentos de teclas
+    parser = argparse.ArgumentParser(description="PlayAble - Head Movement Detection")
+    parser.add_argument("--up", type=str, default="up", help="Tecla para o movimento 'up'")
+    parser.add_argument("--down", type=str, default="down", help="Tecla para o movimento 'down'")
+    parser.add_argument("--left", type=str, default="left", help="Tecla para o movimento 'left'")
+    parser.add_argument("--right", type=str, default="right", help="Tecla para o movimento 'right'")
+    args = parser.parse_args()
+
+    # Cria o dicionário de mapeamento a partir dos argumentos
+    # Este dicionário será usado na função main
+    custom_key_mappings = {
+        "up": args.up,
+        "down": args.down,
+        "left": args.left,
+        "right": args.right,
+        # "center" continua não fazendo nada (None)
+    }
+
+    print("[INFO] Mapeamentos de tecla utilizados:", custom_key_mappings)
+    main(key_mappings=custom_key_mappings)
