@@ -4,35 +4,19 @@ import argparse
 import keyboard
 from ultralytics import YOLO
 
-# ============================================
-# CONFIGURAÇÕES
-# ============================================
 
 # Delay mínimo entre comandos (segundos) para não spammar teclas
 COMMAND_COOLDOWN = 0.15
 
-# Se quiser diminuir o uso de CPU/GPU, você pode rodar
-# o modelo a cada N frames em vez de todo frame:
-PREDICT_EVERY_N_FRAMES = 2
-
-# ============================================
-# CARREGA O MODELO
-# ============================================
+PREDICT_EVERY_N_FRAMES = 2 # Processa o modelo a cada N frames para aliviar CPU/GPU
 
 print("[INFO] Carregando modelo YOLOv8 (classificação)...")
 model = YOLO("./classification/best.pt")
 
-# model.names é um dict: {0: 'center', 1: 'down', ...}
 class_names = model.names
 print("[INFO] Classes aprendidas:", class_names)
 
-# ============================================
-# MAPEAMENTO CLASSE -> TECLA
-# ============================================
 
-# ============================================
-# LOOP PRINCIPAL: WEBCAM -> MODELO -> TECLAS
-# ============================================
 
 def main(key_mappings):
     cap = cv2.VideoCapture(0)
@@ -63,8 +47,7 @@ def main(key_mappings):
         do_predict = (frame_count % PREDICT_EVERY_N_FRAMES == 0)
 
         if do_predict:
-            # Chama o modelo de classificação
-            # (YOLOv8 cuida do resize interno, mas imgsz ajuda a padronizar)
+            # Chama o modelo de classificação (YOLOv8 cuida do resize interno, mas imgsz ajuda a padronizar)
             results = model.predict(source=frame, imgsz=224, verbose=False)
             res = results[0]
 
@@ -111,6 +94,7 @@ def main(key_mappings):
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
+
     # Configura o parser de argumentos para receber os mapeamentos de teclas
     parser = argparse.ArgumentParser(description="PlayAble - Head Movement Detection")
     parser.add_argument("--up", type=str, default="up", help="Tecla para o movimento 'up'")
@@ -119,8 +103,6 @@ if __name__ == "__main__":
     parser.add_argument("--right", type=str, default="right", help="Tecla para o movimento 'right'")
     args = parser.parse_args()
 
-    # Cria o dicionário de mapeamento a partir dos argumentos
-    # Este dicionário será usado na função main
     custom_key_mappings = {
         "up": args.up,
         "down": args.down,

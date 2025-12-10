@@ -3,43 +3,33 @@ import subprocess
 import sys
 import os
 
-# --- CONFIGURAÇÕES ---
+# --- Configs ---
 APP_NAME = "PlayAble"
 WINDOW_WIDTH = 500
 WINDOW_HEIGHT = 600
 DARK_GRAY = "#242424"
 BLUE = "#1F6AA5"
 
-# Lista de teclas que o usuário pode escolher.
-# Adicione outras teclas se necessário.
+# Lista de teclas que o usuário pode escolher
 KEY_OPTIONS = [
-    "up", "down", "left", "right",  # Teclas de seta
+    "up", "down", "left", "right",
     "w", "a", "s", "d",
     "space", "enter", "shift", "ctrl",
     "e", "f", "q", "r",
     "1", "2", "3", "4"
 ]
 
-# --- LÓGICA DA APLICAÇÃO ---
+# --- Lógica da Aplicação ---
 
 def start_main_script(key_mappings):
-    """
-    Inicia o script principal de detecção de movimento, passando os mapeamentos
-    de teclas como argumentos de linha de comando.
-    """
-    # Encontra o caminho para o script playable_yolo_v2.py
-    # Isso assume que run_app.py está na raiz e o script principal em 'classification/'
     script_path = os.path.join("classification", "playable_yolo_v2.py")
 
     if not os.path.exists(script_path):
         print(f"ERRO: Script não encontrado em '{script_path}'")
-        # Opcional: mostrar um pop-up de erro na GUI
         return
 
-    # Constrói o comando para executar o script
-    # Ex: python classification/playable_yolo_v2.py --up w --down s --left a --right d
     command = [
-        sys.executable,  # Caminho para o interpretador Python atual
+        sys.executable,
         script_path,
         "--up", key_mappings["up"],
         "--down", key_mappings["down"],
@@ -69,7 +59,7 @@ def on_closing():
 
 app.protocol("WM_DELETE_WINDOW", on_closing)
 
-# ------------ Conteúdo da Janela ------------
+# --- Conteúdo da Janela ---
 
 # título
 title_label = ctk.CTkLabel(
@@ -102,6 +92,7 @@ directions = {
     "left": "Virar o rosto para Esquerda",
     "right": "Virar o rosto para Direita"
 }
+
 # Valores padrão
 default_keys = {"up": "up", "down": "down", "left": "left", "right": "right"}
 
@@ -145,7 +136,7 @@ creators_label = ctk.CTkLabel(
 
 creators_label2 = ctk.CTkLabel(
     creators_frame,
-    text="João Vitor (https://github.com/iamthewalrusz)",
+    text="João Vitor (github.com/iamthewalrusz)",
     font=ctk.CTkFont(size=12)
 ).pack()
 
@@ -155,9 +146,4 @@ creators_label3 = ctk.CTkLabel(
     font=ctk.CTkFont(size=12)
 ).pack()
 
-# Adicione mais labels se houver mais criadores
-# Ex: ctk.CTkLabel(creators_frame, text="Outro Dev (github.com/outro)").pack()
-
-
-# Inicia o loop da aplicação GUI
 app.mainloop()
